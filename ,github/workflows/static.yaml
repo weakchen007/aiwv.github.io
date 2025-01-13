@@ -1,0 +1,31 @@
+name: GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # 或者你的默认分支，例如 master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1' # 或者你使用的 Ruby 版本
+          bundler-cache: true # Bundle 依赖缓存
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Build with Jekyll
+        run: bundle exec jekyll build
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages # 或者你的部署分支
+          folder: _site # 构建输出目录
